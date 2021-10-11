@@ -26,43 +26,83 @@
 echo ======================================================\n
 echo Running all tests..."\n\n
 
-test "Closed door: PINA = 0x04, 0x00, 0x03 => PORTB: 0x00"
-setPINA 0x04
-continue 5
+
+
+test "PINA: 0x00 => PORTC: 0x07"
+set state = Start
+# Set inputs
 setPINA 0x00
-continue 5
+# Continue for several ticks
+continue 2
+# Set expect values
+expectPORTC 0x07
+# Check pass/fail
+checkResult
+
+test "PINA: 0x01 => PORTC: 0x08"
+set state = Start
+# Set inputs
+setPINA 0x01
+# Continue for several ticks
+continue 2
+# Set expect values
+expectPORTC 0x08
+# Check pass/fail
+checkResult
+
+
+# Example test:
+test "PINA: 0x01 => PORTC: 0x08"
+set state = Start
+# Set inputs
+setPINA 0x01
+# Continue for several ticks
+continue 2
+# Set expect values
+expectPORTC 0x08
+# Check pass/fail
+checkResult
+
+# Example test:
+test "PINA: 0x01 => PORTC: 0x08"
+set state = Start
+# Set inputs
+setPINA 0x01
+# Continue for several ticks
+continue 2
+# Set expect values
+expectPORTC 0x08
+# Check pass/fail
+checkResult
+
+# Example test:
+test "PINA: 0x02, 0x00, 0x02 => PORTC: 0x05"
+set state = Start
+setPINA 0x02
+# Continue for several ticks
+continue 2
+setPINA 0x00
+# Continue for several ticks
+continue 2
+setPINA 0x02
+# Continue for several ticks
+continue 2
+# Set expect values
+expectPORTC 0x05
+# Check pass/fail
+checkResult
+
+# Example test:
+test "PINA: 0x03 => PORTC: 0x00"
+set state = Start
+# Set inputs
 setPINA 0x03
-continue 5
-expectPORTB 0x00
+# Continue for several ticks
+continue 2
+# Set expect values
+expectPORTC 0x00
+# Check pass/fail
 checkResult
-
-test "Open door: PINA = 0x04, 0x00, 0x02 => PORTB: 0x01"
-setPINA 0x04
-continue 5
-setPINA 0x00
-continue 5
-setPINA 0x02
-continue 5
-expectPORTB 0x01
-checkResult
-
-
-test "Open door: PINA = 0x04, 0x00, 0x02, 0x04, 0x00, 0x02 => PORTB: 0x00"
-setPINA 0x04
-continue 5
-setPINA 0x00
-continue 5
-setPINA 0x02
-continue 5
-setPINA 0x04
-continue 5
-setPINA 0x00
-continue 5
-setPINA 0x02
-continue 5
-expectPORTB 0x00
-checkResult
-
 
 
 

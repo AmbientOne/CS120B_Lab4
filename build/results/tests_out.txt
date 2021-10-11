@@ -1,10 +1,7 @@
-Breakpoint 1 at 0x35c: file source/main.c, line 113.
+Breakpoint 1 at 0x3fc: file source/main.c, line 132.
 Note: automatically using hardware breakpoints for read-only addresses.
 ======================================================
 Running all tests..."
 
-"Closed door: PINA = 0x04, 0x00, 0x03 => PORTB: 0x00"..."Open door: PINA = 0x04, 0x00, 0x02 => PORTB: 0x01"..."Open door: PINA = 0x04, 0x00, 0x02, 0x04, 0x00, 0x02 => PORTB: 0x00"...
-	Expected 0x00 
-	PORTB '0x800025:	0x01
-======================================================
+"PINA: 0x00 => PORTC: 0x07"..."PINA: 0x01 => PORTC: 0x08"..."PINA: 0x01 => PORTC: 0x08"..."PINA: 0x01 => PORTC: 0x08"..."PINA: 0x02, 0x00, 0x02 => PORTC: 0x05"..."PINA: 0x03 => PORTC: 0x00"...======================================================
 [Inferior 1 (Remote target) detached]

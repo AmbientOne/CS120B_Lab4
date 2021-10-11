@@ -1,7 +1,7 @@
 /*	Author: aabdi005
  *  Partner(s) Name: 
  *	Lab Section:
- *	Assignment: Lab #4 Exercise #4
+ *	Assignment: Lab #4 Exercise #2
  *	Exercise Description: [optional - include for your own benefit]
  *
  *	I acknowledge all content contained herein, excluding template or example
@@ -12,105 +12,125 @@
 #include "simAVRHeader.h"
 #endif
 
-enum States {Start, firstState, Unlocked, buttonHash, buttonY, release, lock} state;
+
+enum States{Start, firstState, increment, decrement, reset} state;
+
+
 void Tick() {
-	switch(state){
-		case Start:
-			state = firstState;
-			break;
-		case firstState:
-			if(PINA == 0x04) state = buttonHash;
-
-			else state = firstState;
-			break;
-
-        //Unlock door using code
-		case buttonHash:
-            if (PINA == 0x00){
-				state = release;
-			}
-            else if(PINA == 0x04){
-				state = buttonHash;
-			}
-			else{
-				state = firstState;
-			}
+    switch(state){
+        case Start:
+            PORTC = 0x07;
+            state = firstState;
             break;
-           
-		case release:
-			if(PINA == 0x00){
-				state = release;
-			}
-            else if(PINA == 0x02){
-				state = buttonY;
-			}
-            else{
-				state = firstState;
-			}
-			break; 
-		case buttonY:
-            if(PORTB == 0x01) {
-                state = lock;
-                
+
+        case firstState:
+            if(PINA == 0x01){
+                if (PORTC < 9) PORTC++; 
+                state = increment;
             }
-            else if(PINA == 0x02){
-                state = Unlocked;
+            else if(PINA == 0x02) {
+                 if (PORTC > 0) PORTC--; 
+                state = decrement;
             }
-            else {
-                state = firstState;
+            else if(PINA == 0x03){
+                PORTC = 0x00;
+                state = reset;
             }
             break;
 
-		case Unlocked:
-            if(PINA == 0x80) {
+
+        case reset:
+           if(PINA == 0x00){
                 state = firstState;
             }
-            else if(PINA == 0x04){
-                state = buttonHash;
+            else if(PINA == 0x01){
+                if (PORTC < 9) PORTC++; 
+                state = increment;
             }
-			break;
-        case lock:
-            if (PINA == 0x04) {
-                state = buttonHash;
+            else if(PINA == 0x02) {
+                if (PORTC > 0) PORTC--; 
+                state = decrement;
             }
-            else {
-                state = lock;
+            else if(PINA == 0x03){
+                state = reset;
             }
+            break;
         
-		 default:
-			state = Start;
-			break;
-	}
+        
+        case increment:
+            if(PINA == 0x00){
+                state = firstState;
+            }
+            else if(PINA == 0x01){
+                state = increment;
+            }
+            else if(PINA == 0x02) {
+                if (PORTC > 0) PORTC--;
+                state = decrement;
+            }
+            else if(PINA == 0x03){
+                PORTC = 0x00;
+                state = reset;
+            }
+            break;
 
-	switch(state){
+        case decrement:
+            if(PINA == 0x00){
+                state = firstState;
+            }
+            else if(PINA == 0x01){
+                if (PORTC < 9) PORTC++; 
+                state = increment;
+            }
+            else if(PINA == 0x02) {
+                state = decrement;
+            }
+            else if(PINA == 0x03){
+                PORTC = 0x00;
+                state = reset;
+            }
+            break;
+        default:
+            break;
+    }
+    /*
+    switch(state){
 		case Start:
-			PORTB = 0x00;
+			PORTC = 0x07;
 			break;
 		case firstState:
-			PORTB = 0x00;
 			break;
-		case Unlocked:
-            PORTB = 0x01;
+		case increment:
+			if(iter < 0x09){
+				iter++;
+			}
 			break;
-        case lock:
-            PORTB = 0x00;
-            break;
+		case decrement:
+			if(iter > 0x00){
+				iter--;
+			}
+			break;
+		case reset:
+            iter = 0;
+			PORTC = 0x00;
+			break;
 		default:
+			PORTC = 0x07;
 			break;
 	}
+    */
 }
+        
 
 
 int main(void) {
-    /* Insert DDR and PORT initializations */
-	DDRA = 0x00; PORTA = 0xFF;
-    DDRB = 0xFF; PORTB = 0x00;
-	DDRC = 0xFF; PORTC = 0x00;
-
-    PORTB = 0x00;
-    /* Insert your solution below */
+    DDRA = 0x00; PORTA = 0xFF;
+    DDRC = 0xFF; PORTC = 0x00;
+    
+    PORTC = 0x07;
     while (1) {
-	Tick();
+        Tick();
+        
     }
     return 1;
 }
