@@ -1,0 +1,7 @@
+Breakpoint 1 at 0x394: file source/main.c, line 78.
+Note: automatically using hardware breakpoints for read-only addresses.
+======================================================
+Running all tests..."
+
+"PINA: 0x00 => PORTC: 0x07"..."PINA: 0x00, 0X01 => PORTC: 0x08"...======================================================
+[Inferior 1 (Remote target) detached]
