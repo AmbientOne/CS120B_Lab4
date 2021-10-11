@@ -14,7 +14,7 @@
 
 int main(void) {
     /* Insert DDR and PORT initializations */
-
+    //
     /* Insert your solution below */
     while (1) {
 
