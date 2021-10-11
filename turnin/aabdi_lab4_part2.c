@@ -14,7 +14,6 @@
 
 
 enum States{Start, firstState, increment, decrement, reset} state;
-unsigned short iter = 7;
 
 
 
@@ -31,7 +30,7 @@ void Tick() {
 
         case reset:
             if(PINA == 0x03){
-                iter = 0x00;
+                PORTC = 0x00;
                 state = reset;
             }
             else if(PINA == 0x02) state = decrement;
@@ -41,8 +40,8 @@ void Tick() {
         
         case increment:
             if(PINA == 0x01){
-                if(iter < 9) {
-                    iter++;
+                if(PORTC < 0x09) {
+                    PORTC++;
                     state = increment;
                 }
                 else {state = increment;}
@@ -53,8 +52,8 @@ void Tick() {
             break;
         case decrement:
             if(PINA == 0x02){
-                if(iter > 0) {
-                    iter--;
+                if(PORTC > 0x00) {
+                    PORTC--;
                     state = decrement;
                 }
                 else {state = decrement;}
@@ -73,8 +72,8 @@ void Tick() {
 
 int main(void) {
     DDRA = 0x00; PORTA = 0xFF;
-    DDRB = 0xFF; PORTB = 0x00;
-    PORTB = iter;
+    DDRC = 0xFF; PORTC = 0x00;
+    PORTC = 0x07;
     while (1) {
         Tick();
     }
