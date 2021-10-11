@@ -39,13 +39,9 @@ expectPORTC 0x07
 # Check pass/fail
 checkResult
 
-# Example test:
-test "PINA: 0x00, 0X01 => PORTC: 0x08"
+test "PINA: 0x01 => PORTC: 0x08"
 set state = Start
 # Set inputs
-setPINA 0x00
-# Continue for several ticks
-continue 2
 setPINA 0x01
 # Continue for several ticks
 continue 2
@@ -66,6 +62,32 @@ continue 2
 expectPORTC 0x08
 # Check pass/fail
 checkResult
+
+# Example test:
+test "PINA: 0x02 => PORTC: 0x06"
+set state = Start
+setPINA 0x02
+# Continue for several ticks
+continue 2
+# Set expect values
+expectPORTC 0x06
+# Check pass/fail
+checkResult
+
+# Example test:
+test "PINA: 0x03 => PORTC: 0x00"
+set state = Start
+# Set inputs
+setPINA 0x03
+# Continue for several ticks
+continue 2
+# Set expect values
+expectPORTC 0x00
+# Check pass/fail
+checkResult
+
+
+
 # Report on how many tests passed/tests ran
 set $passed=$tests-$failed
 eval "shell echo Passed %d/%d tests.\n",$passed,$tests
