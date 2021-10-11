@@ -17,7 +17,7 @@ enum States{Start, offRelease, onPress, onRelease, offPress} state;
 
 
 
-void TicK() {
+void Tick() {
     switch(state){
         case Start:
         state = offRelease;
@@ -67,7 +67,6 @@ void TicK() {
             }
     }
 
-}
 
 int main(void) {
     DDRA = 0x00; PORTA = 0xFF;
