@@ -25,11 +25,11 @@ void Tick() {
 
         case firstState:
             if(PINA == 0x01){
-                if (PORTC < 9) PORTC++; 
+                if (PORTC < 0x09) PORTC++; 
                 state = increment;
             }
             else if(PINA == 0x02) {
-                 if (PORTC > 0) PORTC--; 
+                if (PORTC > 0x00) PORTC--; 
                 state = decrement;
             }
             else if(PINA == 0x03){
@@ -44,11 +44,11 @@ void Tick() {
                 state = firstState;
             }
             else if(PINA == 0x01){
-                if (PORTC < 9) PORTC++; 
+                if (PORTC < 0x09) PORTC++; 
                 state = increment;
             }
             else if(PINA == 0x02) {
-                if (PORTC > 0) PORTC--; 
+                if (PORTC > 0x00) PORTC--; 
                 state = decrement;
             }
             else if(PINA == 0x03){
@@ -65,7 +65,7 @@ void Tick() {
                 state = increment;
             }
             else if(PINA == 0x02) {
-                if (PORTC > 0) PORTC--;
+                if (PORTC > 0x00) PORTC--;
                 state = decrement;
             }
             else if(PINA == 0x03){
@@ -79,7 +79,7 @@ void Tick() {
                 state = firstState;
             }
             else if(PINA == 0x01){
-                if (PORTC < 9) PORTC++; 
+                if (PORTC < 0x09) PORTC++; 
                 state = increment;
             }
             else if(PINA == 0x02) {
@@ -93,41 +93,15 @@ void Tick() {
         default:
             break;
     }
-    /*
-    switch(state){
-		case Start:
-			PORTC = 0x07;
-			break;
-		case firstState:
-			break;
-		case increment:
-			if(iter < 0x09){
-				iter++;
-			}
-			break;
-		case decrement:
-			if(iter > 0x00){
-				iter--;
-			}
-			break;
-		case reset:
-            iter = 0;
-			PORTC = 0x00;
-			break;
-		default:
-			PORTC = 0x07;
-			break;
-	}
-    */
+ 
 }
         
 
 
 int main(void) {
     DDRA = 0x00; PORTA = 0xFF;
-    DDRC = 0xFF; PORTC = 0x00;
+    DDRC = 0xFF; PORTC = 0x07;
     
-    PORTC = 0x07;
     while (1) {
         Tick();
         
