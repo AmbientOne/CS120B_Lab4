@@ -25,7 +25,7 @@ void Tick() {
 
         //Unlock door using code
 		case buttonHash:
-            if ((PORTB & 0x01) == 0x01) state=lock;
+            if ((PORTB & 0x01) == 0x01) state = firstState;
             else if (PINA == 0x00){
 				state = release;
 			}
