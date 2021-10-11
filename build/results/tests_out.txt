@@ -3,5 +3,5 @@ Note: automatically using hardware breakpoints for read-only addresses.
 ======================================================
 Running all tests..."
 
-"Open door: PA = 0x04, 0x00, 0x02"...======================================================
+"Closed door: PA = 0x04, 0x00, 0x03"..."Open door: PA = 0x04, 0x00, 0x02"...======================================================
 [Inferior 1 (Remote target) detached]
