@@ -1,7 +1,7 @@
-/*	Author: aabdi005
- *  Partner(s) Name: 
+/*	Author: Bryan Guevara
+ *  Partner(s) Name: Bryan Guevara
  *	Lab Section:
- *	Assignment: Lab #4 Exercise #2
+ *	Assignment: Lab 4  Exercise 2
  *	Exercise Description: [optional - include for your own benefit]
  *
  *	I acknowledge all content contained herein, excluding template or example
@@ -12,96 +12,96 @@
 #include "simAVRHeader.h"
 #endif
 
-
-enum States{Start, firstState, increment, decrement, reset} state;
-
-
+enum States { Start, wait, addwait, subwait, reswait} state;
 
 void Tick() {
-    switch(state){
+    switch (state){
         case Start:
-            state = firstState;
+            state = wait;
             break;
-        case firstState:
-            if(PINA == 0x00){
-                state = firstState;
-            }
-            else if(PINA == 0x01){
-                if(PORTC < 9) {
-                    PORTC++;
-                }
-                state = increment;
-            }
-            else if(PINA == 0x02) {
-                if(PORTC > 0){
-                    PORTC--;
-                }
-                state = decrement;
-            }
-            else if(PINA == 0x03){
+        case wait:
+            switch (PINA)
+            {
+            case 0x00:
+                state = wait;
+                break;
+            case 0x01:
+                if (PORTC < 9) { PORTC++; }
+                state = addwait;
+                break;
+            case 0x02:
+                if (PORTC > 0) { PORTC--; }
+                state = subwait;
+                break;
+            case 0x03:
                 PORTC = 0x00;
-                state = reset;
+                state = reswait;
+            default:
+                break;
             }
             break;
-
-        case reset:
-           if(PINA == 0x00){
-                state = firstState;
-            }
-            else if(PINA == 0x01){
-                state = increment;
-            }
-            else if(PINA == 0x02) {
-                state = decrement;
-            }
-            else if(PINA == 0x03){
-                state = reset;
-            }
-            break;
-        
-        case increment:
-
-            if(PINA == 0x00){
-                state = firstState;
-            }
-            else if(PINA == 0x01){
-                state = increment;
-            }
-            else if(PINA == 0x02) {
-                state = decrement;
-            }
-            else if(PINA == 0x03){
-                state = reset;
+        case addwait:
+            switch (PINA)
+            {
+            case 0x00:
+                state = wait;
+                break;
+            case 0x01:
+                state = addwait;
+                break;
+            case 0x03:
+                PORTC = 0x00;
+                state = reswait;
+                break;
+            
+            default:
+                break;
             }
             break;
-        case decrement:
-            if(PINA == 0x00){
-                state = firstState;
-            }
-            else if(PINA == 0x01){
-                state = increment;
-            }
-            else if(PINA == 0x02) {
-                state = decrement;
-            }
-            else if(PINA == 0x03){
-                state = reset;
+        case subwait:
+            switch (PINA)
+            {
+            case 0x00:
+                state = wait;
+                break;
+            case 0x02:
+                state = subwait;
+                break;
+            case 0x03:
+                PORTC = 0x00;
+                state = reswait;
+                break;
+            
+            default:
+                break;
             }
             break;
-
+        case reswait:
+            switch (PINA)
+            {
+            case 0x00:
+                state = wait;
+                break;
+            case 0x03:
+                state = reswait;
+                break;
+            
+            default:
+                break;
+            }
+            break;
         default:
             break;
-    }
+    } // transitions
 }
-        
-
 
 int main(void) {
+    /* Insert DDR and PORT initializations */
     DDRA = 0x00; PORTA = 0xFF;
     DDRC = 0xFF; PORTC = 0x00;
-    
+    /* Insert your solution below */
+    PORTC = 0x07;
     while (1) {
-        PORTC = 0x07;
         Tick();
     }
     return 1;
