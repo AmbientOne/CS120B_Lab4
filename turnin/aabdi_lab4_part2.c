@@ -16,33 +16,26 @@
 enum States{Start, firstState, increment, decrement, reset} state;
 
 
-
+unsigned char iter = 0x07;
 void Tick() {
     switch(state){
         case Start:
             state = firstState;
             break;
         case firstState:
-            if(PINA == 0x00){
-                state = firstState;
-            }
-            else if(PINA == 0x01){
-                if(PORTC < 9) {
-                    PORTC++;
-                }
+            if(PINA == 0x01){
                 state = increment;
             }
             else if(PINA == 0x02) {
-                if(PORTC > 0){
-                    PORTC--;
-                }
                 state = decrement;
+            
             }
             else if(PINA == 0x03){
-                PORTC = 0x00;
+
                 state = reset;
             }
             break;
+
 
         case reset:
            if(PINA == 0x00){
@@ -59,28 +52,23 @@ void Tick() {
             }
             break;
         
+        
         case increment:
-
             if(PINA == 0x00){
                 state = firstState;
             }
             else if(PINA == 0x01){
                 state = increment;
             }
-            else if(PINA == 0x02) {
-                state = decrement;
-            }
             else if(PINA == 0x03){
                 state = reset;
             }
             break;
+
         case decrement:
             if(PINA == 0x00){
                 state = firstState;
             }
-            else if(PINA == 0x01){
-                state = increment;
-            }
             else if(PINA == 0x02) {
                 state = decrement;
             }
@@ -88,10 +76,33 @@ void Tick() {
                 state = reset;
             }
             break;
-
         default:
             break;
     }
+    switch(state){
+		case Start:
+			PORTC = 0x07;
+			break;
+		case firstState:
+			break;
+		case increment:
+			if(iter < 0x09){
+				iter++;
+			}
+			break;
+		case decrement:
+			if(iter > 0x00){
+				iter--;
+			}
+			break;
+		case reset:
+            iter = 0;
+			PORTC = 0x00;
+			break;
+		default:
+			PORTC = 0x07;
+			break;
+	}
 }
         
 
@@ -100,9 +111,10 @@ int main(void) {
     DDRA = 0x00; PORTA = 0xFF;
     DDRC = 0xFF; PORTC = 0x00;
     
+
     while (1) {
-        PORTC = 0x07;
         Tick();
+        PORTC = iter;
     }
     return 1;
 }
