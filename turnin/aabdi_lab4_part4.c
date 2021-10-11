@@ -1,7 +1,7 @@
 /*	Author: aabdi005
  *  Partner(s) Name: 
  *	Lab Section:
- *	Assignment: Lab #4 Exercise #3
+ *	Assignment: Lab #4 Exercise #4
  *	Exercise Description: [optional - include for your own benefit]
  *
  *	I acknowledge all content contained herein, excluding template or example
@@ -12,7 +12,7 @@
 #include "simAVRHeader.h"
 #endif
 
-enum States {Start, firstState, Unlocked, buttonHash, buttonY, release } state;
+enum States {Start, firstState, Unlocked, buttonHash, buttonY, release, lock} state;
 void Tick() {
 	switch(state){
 		case Start:
@@ -20,13 +20,13 @@ void Tick() {
 			break;
 		case firstState:
 			if(PINA == 0x04) state = buttonHash;
+
 			else state = firstState;
 			break;
 
         //Unlock door using code
 		case buttonHash:
-            if ((PORTB & 0x01) == 0x01) state = firstState;
-            else if (PINA == 0x00){
+            if (PINA == 0x00){
 				state = release;
 			}
             else if(PINA == 0x04){
@@ -49,15 +49,34 @@ void Tick() {
 			}
 			break; 
 		case buttonY:
-            state = PINA == 0x02 ? Unlocked : firstState; 
+            if(PORTB == 0x01) {
+                state = lock;
+                
+            }
+            else if(PINA == 0x02){
+                state = Unlocked;
+            }
+            else {
+                state = firstState;
+            }
             break;
 
 		case Unlocked:
-            state = (PINA == 0x80) ? firstState : Unlocked;
+            if(PINA == 0x80) {
+                state = firstState;
+            }
+            else if(PINA == 0x04){
+                state = buttonHash;
+            }
 			break;
-
+        case lock:
+            if (PINA == 0x04) {
+                state = buttonHash;
+            }
+            else {
+                state = lock;
+            }
         
-    
 		 default:
 			state = Start;
 			break;
@@ -71,8 +90,11 @@ void Tick() {
 			PORTB = 0x00;
 			break;
 		case Unlocked:
-			PORTB = 0x01;
+            PORTB = 0x01;
 			break;
+        case lock:
+            PORTB = 0x00;
+            break;
 		default:
 			break;
 	}
@@ -86,7 +108,6 @@ int main(void) {
 	DDRC = 0xFF; PORTC = 0x00;
 
     PORTB = 0x00;
-    PORTC = 0x00;
     /* Insert your solution below */
     while (1) {
 	Tick();

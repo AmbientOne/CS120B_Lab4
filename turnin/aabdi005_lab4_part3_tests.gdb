@@ -26,7 +26,7 @@
 echo ======================================================\n
 echo Running all tests..."\n\n
 
-test "Closed door: PA = 0x04, 0x00, 0x03"
+test "Closed door: PINA = 0x04, 0x00, 0x03 => PORTB: 0x00"
 setPINA 0x04
 continue 5
 setPINA 0x00
@@ -36,7 +36,7 @@ continue 5
 expectPORTB 0x00
 checkResult
 
-test "Open door: PA = 0x04, 0x00, 0x02"
+test "Open door: PINA = 0x04, 0x00, 0x02 => PORTB: 0x01"
 setPINA 0x04
 continue 5
 setPINA 0x00
@@ -45,6 +45,7 @@ setPINA 0x02
 continue 5
 expectPORTB 0x01
 checkResult
+
 
 
 
